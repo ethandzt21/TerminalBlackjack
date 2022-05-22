@@ -152,8 +152,8 @@ def main():
     FPS = 60
     level = 0
     lives = 5
-    main_font = pygame.font.SysFont("comicsans", 50)
-    lost_font = pygame.font.SysFont("comicsans", 60)
+    main_font = pygame.font.SysFont("arial.ttf", 50)
+    lost_font = pygame.font.SysFont("arial.ttf", 60)
 
     enemies = []
     wave_length = 5
@@ -184,7 +184,7 @@ def main():
         player.draw(WIN)
 
         if lost:
-            lost_label = lost_font.render("You Lost!!", 1, (255,255,255))
+            lost_label = lost_font.render("You Lost!", 1, (255,255,255), italic=True)
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
@@ -243,12 +243,12 @@ def main():
         player.move_lasers(-laser_vel, enemies)
 
 def main_menu():
-    title_font = pygame.font.SysFont("comicsans", 70)
+    title = pygame.font.SysFont("arial.ttf", 70, italic=True)
     run = True
     while run:
         WIN.blit(BG, (0,0))
-        title_label = title_font.render("Press the mouse to begin...", 1, (255,255,255))
-        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+        title_line = title.render("Click to begin.", 1, (255,255,255))
+        WIN.blit(title_line, (WIDTH/2 - title_line.get_width()/2, 350))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
