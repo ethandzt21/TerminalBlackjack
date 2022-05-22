@@ -6,23 +6,22 @@ pygame.font.init()
 
 WIDTH, HEIGHT = 750, 750
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Space Shooter Tutorial")
+pygame.display.set_caption("Space Invader High Tech Hacks 2.0")
 
-# Load images
+# Enemy ships
 Ship1 = pygame.image.load(os.path.join("assets", "enemy_ship_red.png"))
 Ship2 = pygame.image.load(os.path.join("assets", "enemy_ship_green.png"))
 Ship3 = pygame.image.load(os.path.join("assets", "enemy_ship_blue.png"))
 
-# Player player
+# Player ship
 playerShip = pygame.image.load(os.path.join("assets", "player_ship.png"))
 
 # Lasers
 ENEMY_LASER = pygame.image.load(os.path.join("assets", "enemy_laser.png"))
 PLAYER_LASER = pygame.image.load(os.path.join("assets", "player_laser.png"))
 
-
 # Background
-BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
+background = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
 
 class Laser:
     def __init__(self, x, y, img):
@@ -41,7 +40,7 @@ class Laser:
         return not(self.y <= height and self.y >= 0)
 
     def collision(self, obj):
-        return collide(self, obj)
+        return collision(self, obj)
 
 
 class Ship:
@@ -142,25 +141,26 @@ class Enemy(Ship):
             self.cool_down_counter = 1
 
 
-def collide(obj1, obj2):
+def collision(obj1, obj2):
     offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
+
 
 def main():
     run = True
     FPS = 60
     level = 0
-    lives = 5
+    lives = 3
     main_font = pygame.font.SysFont("arial.ttf", 50)
-    lost_font = pygame.font.SysFont("arial.ttf", 60)
+    lost_font = pygame.font.SysFont("arial.ttf", 70)
 
     enemies = []
     wave_length = 5
     enemy_vel = 1
 
     player_vel = 5
-    laser_vel = 5
+    laser_vel = 3
 
     player = Player(300, 630)
 
@@ -170,13 +170,13 @@ def main():
     lost_count = 0
 
     def redraw_window():
-        WIN.blit(BG, (0,0))
+        WIN.blit(background, (0,0))
         # draw text
-        lives_label = main_font.render(f"Lives: {lives}", 1, (255,255,255))
-        level_label = main_font.render(f"Level: {level}", 1, (255,255,255))
+        lives_text = main_font.render(f"Lives: {lives}", 1, (255,255,255))
+        level_text = main_font.render(f"Level: {level}", 1, (255,255,255))
 
-        WIN.blit(lives_label, (10, 10))
-        WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
+        WIN.blit(lives_text, (10, 10))
+        WIN.blit(level_text, (WIDTH - level_text.get_width() - 10, 10))
 
         for enemy in enemies:
             enemy.draw(WIN)
@@ -223,7 +223,7 @@ def main():
             player.y -= player_vel
         if keys[pygame.K_s] and player.y + player_vel + player.get_height() + 15 < HEIGHT: # down
             player.y += player_vel
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_j]:
             player.shoot()
 
         for enemy in enemies[:]:
@@ -233,7 +233,7 @@ def main():
             if random.randrange(0, 2*60) == 1:
                 enemy.shoot()
 
-            if collide(enemy, player):
+            if collision(enemy, player):
                 player.health -= 10
                 enemies.remove(enemy)
             elif enemy.y + enemy.get_height() > HEIGHT:
@@ -242,11 +242,12 @@ def main():
 
         player.move_lasers(-laser_vel, enemies)
 
-def main_menu():
+
+def start():
     title = pygame.font.SysFont("arial.ttf", 70, italic=True)
     run = True
     while run:
-        WIN.blit(BG, (0,0))
+        WIN.blit(background, (0,0))
         title_line = title.render("Click to begin.", 1, (255,255,255))
         WIN.blit(title_line, (WIDTH/2 - title_line.get_width()/2, 350))
         pygame.display.update()
@@ -258,4 +259,4 @@ def main_menu():
     pygame.quit()
 
 
-main_menu()
+start()
