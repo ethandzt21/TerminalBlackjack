@@ -9,17 +9,16 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Shooter Tutorial")
 
 # Load images
-Ship1 = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.png"))
-Ship2 = pygame.image.load(os.path.join("assets", "pixel_ship_green_small.png"))
-Ship3 = pygame.image.load(os.path.join("assets", "pixel_ship_blue_small.png"))
+Ship1 = pygame.image.load(os.path.join("assets", "enemy_ship_red.png"))
+Ship2 = pygame.image.load(os.path.join("assets", "enemy_ship_green.png"))
+Ship3 = pygame.image.load(os.path.join("assets", "enemy_ship_blue.png"))
 
 # Player player
-playerShip = pygame.image.load(os.path.join("assets", "main_ship.png"))
+playerShip = pygame.image.load(os.path.join("assets", "player_ship.png"))
 
 # Lasers
-RED_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_red.png"))
-
-BLUE_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_blue.png"))
+ENEMY_LASER = pygame.image.load(os.path.join("assets", "enemy_laser.png"))
+PLAYER_LASER = pygame.image.load(os.path.join("assets", "player_laser.png"))
 
 
 # Background
@@ -95,8 +94,8 @@ class Player(Ship):
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
         self.ship_img = playerShip
-        self.laser_img = YELLOW_LASER
-        self.mask = pygame.mask.from_surface(self.ship_img)
+        self.laser_img = PLAYER_LASER
+        self.mask = pygame.mask.from_surface(self  .ship_img)
         self.max_health = health
 
     def move_lasers(self, vel, objs):
@@ -117,15 +116,15 @@ class Player(Ship):
         self.healthbar(window)
 
     def healthbar(self, window):
-        pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_img.get_height() - 10, self.ship_img.get_width(), 5))
-        pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_img.get_height() - 10, self.ship_img.get_width() * (self.health/self.max_health), 5))
+        pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_img.get_height() - 15, self.ship_img.get_width(), 3))
+        pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_img.get_height() - 15, self.ship_img.get_width() * (self.health/self.max_health), 3))
 
 
 class Enemy(Ship):
     COLOR_MAP = {
-                "red": (Ship1, BLUE_LASER),
-                "green": (Ship2, BLUE_LASER),
-                "blue": (Shipe3, BLUE_LASER)
+                "red": (Ship1, ENEMY_LASER),
+                "green": (Ship2, ENEMY_LASER),
+                "blue": (Ship3, ENEMY_LASER)
                 }
 
     def __init__(self, x, y, color, health=100):
