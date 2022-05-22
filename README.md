@@ -1,2 +1,2 @@
-# Terminal Blackjack 
-High Tech Hacks 2.0
+# High Tech Hacks 2.0
+Terminal Blackjack
